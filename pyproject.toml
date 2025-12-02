@@ -2,7 +2,7 @@
 name = "code-review-assistant"
 version = "1.0.0"
 description = "A code review assistant powered by Google ADK and Gemini models"
-authors = ["Ayo Adedeji <ayoad@google.com>"]
+authors = ["LiberiFatali"]
 readme = "README.md"
 packages = [{include = "code_review_assistant"}]
 

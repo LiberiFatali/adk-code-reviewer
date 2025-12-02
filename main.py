@@ -12,8 +12,10 @@ ARTIFACT_BUCKET = os.environ.get("ARTIFACT_BUCKET", "code-review-assistant-artif
 
 # Build the session URI if we have all database credentials
 if all([DB_USER, DB_PASSWORD, DB_NAME, CLOUD_SQL_CONNECTION_NAME]):
-    SESSION_SERVICE_URI = f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@/{DB_NAME}?host=/cloudsql/{CLOUD_SQL_CONNECTION_NAME}"
-    print(f"Using Cloud SQL for session persistence")
+    SESSION_SERVICE_URI = (
+        f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@/{DB_NAME}?host=/cloudsql/{CLOUD_SQL_CONNECTION_NAME}"
+    )
+    print("Using Cloud SQL for session persistence")
 else:
     SESSION_SERVICE_URI = ""  # Falls back to in-memory
     print("Using in-memory session service (no database credentials provided)")
@@ -22,10 +24,10 @@ else:
 app = get_fast_api_app(
     agents_dir=os.path.dirname(os.path.abspath(__file__)),
     session_service_uri=SESSION_SERVICE_URI,
-    artifact_service_uri=f"gs://{ARTIFACT_BUCKET}",
+    artifact_service_uri=f"{ARTIFACT_BUCKET}",
     allow_origins=["*"],
     web=True,
-    trace_to_cloud=True
+    trace_to_cloud=True,
 )
 
 if __name__ == "__main__":

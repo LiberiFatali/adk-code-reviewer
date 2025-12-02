@@ -21,6 +21,8 @@ RUN poetry config virtualenvs.create false && \
 # Copy the rest of the application code
 COPY code_review_assistant/ ./code_review_assistant/
 
+RUN pip install -e .
+
 # ---
 # Stage 2: The Final Production Image
 # This stage creates a lean, secure image using the artifacts from the builder.

@@ -1,3 +1,4 @@
+pip<24.1 # to fix issue with google_cloud_bigquery-1.28.0
 google-cloud-aiplatform[adk,agent-engines]>=1.111
 google-adk>=1.14.1
 pycodestyle>=2.11.0
