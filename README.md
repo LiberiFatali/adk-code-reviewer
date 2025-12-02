@@ -79,3 +79,9 @@ pip install -r code_review_assistant/requirements.txt
 cp .env.example .env
 nano .env  # Add your GOOGLE_CLOUD_PROJECT
 ```
+
+### Deployment on Cloud
+
+```bash
+./deploy.sh cloud-run
+```
