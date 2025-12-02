@@ -1,5 +1,3 @@
-original code from [Ayoisio](https://github.com/ayoisio/adk-code-review-assistant/tree/codelab)
-
 # 🎓 Code Reviewer
 
 Production AI agents with Google ADK
@@ -85,3 +83,6 @@ nano .env  # Add your GOOGLE_CLOUD_PROJECT
 ```bash
 ./deploy.sh cloud-run
 ```
+
+### Acknowledgement
+original code from [Ayoisio](https://github.com/ayoisio/adk-code-review-assistant/tree/codelab)
