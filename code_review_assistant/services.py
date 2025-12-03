@@ -23,14 +23,6 @@ def get_session_service():
     if session_uri:
         if 'postgresql' in session_uri or 'sqlite' in session_uri:
             return DatabaseSessionService(db_url=session_uri)
-        elif 'vertexai://' in session_uri:
-            # Parse Agent Engine ID from URI
-            agent_engine_id = session_uri.replace('vertexai://', '')
-            return VertexAiSessionService(
-                project=config.google_cloud_project,
-                location=config.google_cloud_location,
-                agent_engine_id=agent_engine_id
-            )
 
     # Default to in-memory
     return InMemorySessionService()

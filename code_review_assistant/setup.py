@@ -7,7 +7,7 @@ setup(
     author="LiberiFatali",
     packages=find_packages(),
     install_requires=[
-        "google-cloud-aiplatform[adk,agent-engines]>=1.111",
+        "google-cloud-aiplatform[adk]>=1.111",
         "google-adk>=1.14.1",
         "pycodestyle>=2.11.0",
         "python-dotenv>=1.0.0",

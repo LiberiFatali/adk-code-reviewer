@@ -2,42 +2,39 @@
 
 Production AI agents with Google ADK
 
-![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
-![ADK](https://img.shields.io/badge/Google%20ADK-1.15%2B-green)
-![Gemini](https://img.shields.io/badge/Gemini-2.5-red)
-
 ## 🎯 In This Project
 
 - **Review Pipeline**: 4 specialized agents (Analyzer → Style Checker → Test Runner → Synthesizer)
 - **Fix Pipeline**: Automated code fixing with iterative refinement (Loop architecture)
 - **Production Tools**: AST parsing, style checking, test generation, progress tracking
 - **State Management**: Multi-tier state with type-safe constants pattern
-- **Cloud Deployment**: Deploy to Agent Engine or Cloud Run with observability
+- **Cloud Deployment**: Deploy to Cloud Run with observability
 
 ## 📂 Project Structure
 
 ```
 code-review-assistant/
 ├── code_review_assistant/
-│   ├── agent.py                 # Placeholders for pipelines
-│   ├── config.py                # Complete - no changes needed
-│   ├── constants.py             # Complete - StateKeys defined
-│   ├── tools.py                 # Placeholders for tools (Modules 4-6)
+│   ├── agent.py
+│   ├── config.py
+│   ├── constants.py
+│   ├── tools.py
 │   └── sub_agents/
-│       ├── review_pipeline/     # Placeholders (Module 5)
+│       ├── review_pipeline/
 │       │   ├── code_analyzer.py
 │       │   ├── style_checker.py
 │       │   ├── test_runner.py
 │       │   └── feedback_synthesizer.py
-│       └── fix_pipeline/        # Placeholders (Module 6)
+│       └── fix_pipeline/
 │           ├── code_fixer.py
 │           ├── fix_test_runner.py
 │           ├── fix_validator.py
 │           └── fix_synthesizer.py
 ├── tests/
-│   └── test_agent_engine.py    # Complete - test deployment
-├── deploy.sh                    # Complete - handles all deployments
-└── README.md                    # This file
+│   ├── test_code_analyzer.py
+│   └── test_code_review_agent.py
+├── deploy.sh                    # handles all deployments
+└── README.md
 ```
 
 ## 🚀 Getting Started
@@ -78,11 +75,12 @@ cp .env.example .env
 nano .env  # Add your GOOGLE_CLOUD_PROJECT
 ```
 
-### Deployment on Cloud
+### Deployment
 
 ```bash
-./deploy.sh cloud-run
+./deploy.sh {local | cloud-run}
 ```
 
 ### Acknowledgement
+
 original code from [Ayoisio](https://github.com/ayoisio/adk-code-review-assistant/tree/codelab)

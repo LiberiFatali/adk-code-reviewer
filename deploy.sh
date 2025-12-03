@@ -21,12 +21,11 @@ DEFAULT_STAGING_BUCKET="${SERVICE_NAME}-staging"
 # --- Helper Functions ---
 
 usage() {
-    echo "Usage: $0 {local|cloud-run|agent-engine}"
+    echo "Usage: $0 {local|cloud-run}"
     echo ""
     echo "Commands:"
     echo "  local         - 🚀 Run the agent locally with a purely in-memory database for quick testing."
     echo "  cloud-run     - ☁️  Deploy to Cloud Run with a user-managed Cloud SQL database for persistence."
-    echo "  agent-engine  - 🧠 Deploy to Vertex AI Agent Engine for a fully managed, stateful agent endpoint."
 }
 
 validate_cloud_env() {
@@ -65,34 +64,6 @@ ensure_apis_enabled_for_cloud_run() {
     done
 
     echo "   - All required APIs for Cloud Run are processed."
-}
-
-ensure_apis_enabled_for_agent_engine() {
-    echo "🔧 Checking and enabling required Google Cloud APIs for Agent Engine..."
-
-    REQUIRED_APIS=(
-        "aiplatform.googleapis.com"
-        "storage.googleapis.com"
-        "cloudbuild.googleapis.com"
-        "compute.googleapis.com"
-        "cloudtrace.googleapis.com"
-    )
-
-    for API in "${REQUIRED_APIS[@]}"; do
-        if ! gcloud services list --enabled --filter="name:${API}" --format="value(name)" --project="${GOOGLE_CLOUD_PROJECT}" 2>/dev/null | grep -q "${API}"; then
-            echo "   - Enabling ${API}..."
-            if gcloud services enable "${API}" --project="${GOOGLE_CLOUD_PROJECT}"; then
-                echo "   - ${API} enabled successfully. Waiting for propagation..."
-                sleep 5  # Give the API a moment to fully activate
-            else
-                echo "   ⚠️  Warning: Failed to enable ${API}. You may need to enable it manually."
-            fi
-        else
-            echo "   - ${API} is already enabled."
-        fi
-    done
-
-    echo "   - All required APIs for Agent Engine are processed."
 }
 
 ensure_bucket_exists() {
@@ -184,38 +155,6 @@ ensure_iam_permissions_for_cloud_run() {
         --quiet 2>/dev/null || echo "   ⚠️  Artifact Registry Writer role may already be assigned."
 
     # Vertex AI User permission for model access
-    echo "   - Granting Vertex AI User role..."
-    gcloud projects add-iam-policy-binding "$GOOGLE_CLOUD_PROJECT" \
-        --member="serviceAccount:$SERVICE_ACCOUNT" \
-        --role="roles/aiplatform.user" \
-        --condition=None \
-        --quiet 2>/dev/null || echo "   ⚠️  Vertex AI User role may already be assigned."
-
-    # Cloud Trace Agent permission for trace data
-    echo "   - Granting Cloud Trace Agent role..."
-    gcloud projects add-iam-policy-binding "$GOOGLE_CLOUD_PROJECT" \
-        --member="serviceAccount:$SERVICE_ACCOUNT" \
-        --role="roles/cloudtrace.agent" \
-        --condition=None \
-        --quiet 2>/dev/null || echo "   ⚠️  Cloud Trace Agent role may already be assigned."
-
-    echo "   - IAM permissions configuration complete."
-}
-
-ensure_iam_permissions_for_agent_engine() {
-    echo "🔐 Granting necessary permissions for Agent Engine..."
-    PROJECT_NUMBER=$(gcloud projects describe "$GOOGLE_CLOUD_PROJECT" --format="value(projectNumber)")
-    SERVICE_ACCOUNT="$PROJECT_NUMBER-compute@developer.gserviceaccount.com"
-
-    # Storage Object Admin permission for artifacts and staging
-    echo "   - Granting Storage Object Admin role..."
-    gcloud projects add-iam-policy-binding "$GOOGLE_CLOUD_PROJECT" \
-        --member="serviceAccount:$SERVICE_ACCOUNT" \
-        --role="roles/storage.objectAdmin" \
-        --condition=None \
-        --quiet 2>/dev/null || echo "   ⚠️  Storage Object Admin role may already be assigned."
-
-    # Vertex AI User permission
     echo "   - Granting Vertex AI User role..."
     gcloud projects add-iam-policy-binding "$GOOGLE_CLOUD_PROJECT" \
         --member="serviceAccount:$SERVICE_ACCOUNT" \
@@ -400,81 +339,6 @@ case "$1" in
         else
             echo "❌ Error: Deployment failed. Please check the error messages above."
             exit 1
-        fi
-        ;;
-
-    agent-engine)
-        validate_cloud_env
-        echo "🧠 Deploying to Vertex AI Agent Engine (Fully Managed Persistence)..."
-        echo "   - Enabling Cloud Trace for observability."
-
-        # Enable required APIs first
-        ensure_apis_enabled_for_agent_engine
-
-        # Set up IAM permissions
-        ensure_iam_permissions_for_agent_engine
-
-        # Set up staging bucket
-        if [ -z "$STAGING_BUCKET" ]; then
-            STAGING_BUCKET="gs://$DEFAULT_STAGING_BUCKET"
-            echo "   - No staging bucket specified. Will use default: $STAGING_BUCKET"
-        fi
-        ensure_staging_bucket_exists "$STAGING_BUCKET"
-
-        # Set up artifact bucket (Agent Engine also needs runtime artifact storage)
-        if [ -z "$ARTIFACT_BUCKET" ]; then
-            ARTIFACT_BUCKET="$DEFAULT_ARTIFACT_BUCKET"
-        fi
-        ensure_bucket_exists "$ARTIFACT_BUCKET" "artifact storage"
-
-        # Note: Agent Engine handles environment variables differently
-        # The ARTIFACT_BUCKET will be available to the agent code via os.environ
-        export ARTIFACT_BUCKET="$ARTIFACT_BUCKET"
-
-        echo "📦 Deploying with ADK CLI..."
-        echo "   - Project: $GOOGLE_CLOUD_PROJECT"
-        echo "   - Region: $GOOGLE_CLOUD_LOCATION"
-        echo "   - Staging: $STAGING_BUCKET"
-        echo ""
-
-        if [ -n "$AGENT_ENGINE_ID" ]; then
-            echo "   - Updating existing Agent Engine: $AGENT_ENGINE_ID"
-            if adk deploy agent_engine \
-                --project="$GOOGLE_CLOUD_PROJECT" \
-                --region="$GOOGLE_CLOUD_LOCATION" \
-                --staging_bucket="$STAGING_BUCKET" \
-                --agent_engine_id="$AGENT_ENGINE_ID" \
-                --trace_to_cloud \
-                code_review_assistant; then
-
-                echo ""
-                echo "✅ Agent Engine updated successfully!"
-            else
-                echo "❌ Error: Agent Engine update failed."
-                exit 1
-            fi
-        else
-            echo "   - Creating new Agent Engine deployment."
-            if adk deploy agent_engine \
-                --project="$GOOGLE_CLOUD_PROJECT" \
-                --region="$GOOGLE_CLOUD_LOCATION" \
-                --staging_bucket="$STAGING_BUCKET" \
-                --display_name="Code Review Assistant" \
-                --trace_to_cloud \
-                code_review_assistant; then
-
-                echo ""
-                echo "✅ Agent Engine created successfully!"
-                echo "   ⚠️  IMPORTANT: Save the Agent Engine ID shown above in your .env file"
-                echo "   for future updates (as AGENT_ENGINE_ID=<the-id>)."
-            else
-                echo "❌ Error: Agent Engine creation failed."
-                echo "   Check the logs for details. Common issues:"
-                echo "   - Missing requirements.txt file"
-                echo "   - Import errors in the agent code"
-                echo "   - API quota issues"
-                exit 1
-            fi
         fi
         ;;
 

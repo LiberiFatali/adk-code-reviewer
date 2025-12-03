@@ -51,14 +51,6 @@ class AgentConfig(BaseSettings):
         default=None, description="The name of the database."
     )
 
-    # --- Agent Engine Configuration (for agent-engine deployment) ---
-    agent_engine_id: Optional[str] = Field(
-        default=None, description="ID of the deployed Vertex AI Agent Engine."
-    )
-    staging_bucket: Optional[str] = Field(
-        default=None, description="GCS staging bucket for Agent Engine deployments."
-    )
-
     # --- Artifact Storage Configuration ---
     artifact_bucket: Optional[str] = Field(
         default=None, description="GCS bucket for artifact storage (e.g., 'your-project-artifacts')"
