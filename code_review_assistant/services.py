@@ -3,7 +3,7 @@ Service initialization utilities for the Code Review Assistant.
 """
 import os
 from google.adk.artifacts import GcsArtifactService, InMemoryArtifactService
-from google.adk.sessions import InMemorySessionService, DatabaseSessionService, VertexAiSessionService
+from google.adk.sessions import InMemorySessionService, DatabaseSessionService
 from .config import config
 
 

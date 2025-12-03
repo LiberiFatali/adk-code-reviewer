@@ -15,26 +15,35 @@ Production AI agents with Google ADK
 ```
 code-review-assistant/
 ├── code_review_assistant/
-│   ├── agent.py
-│   ├── config.py
-│   ├── constants.py
-│   ├── tools.py
+│   ├── __init__.py
+│   ├── agent.py                 # Main orchestration (root agent + pipelines)
+│   ├── config.py                # Configuration management
+│   ├── constants.py             # StateKeys constants
+│   ├── requirements.txt         # Python dependencies
+│   ├── services.py
+│   ├── setup.py
+│   ├── tools.py                 # Tool implementations
 │   └── sub_agents/
 │       ├── review_pipeline/
+│       │   ├── __init__.py
 │       │   ├── code_analyzer.py
 │       │   ├── style_checker.py
 │       │   ├── test_runner.py
 │       │   └── feedback_synthesizer.py
 │       └── fix_pipeline/
+│           ├── __init__.py
 │           ├── code_fixer.py
 │           ├── fix_test_runner.py
 │           ├── fix_validator.py
 │           └── fix_synthesizer.py
 ├── tests/
 │   ├── test_code_analyzer.py
-│   └── test_code_review_agent.py
-├── deploy.sh                    # handles all deployments
-└── README.md
+│   └── ...
+├── .env.example                  # Environment variable template
+├── deploy.sh                     # Deployment script
+├── main.py
+├── pyproject.toml
+└── README.md                     # This file
 ```
 
 ## 🚀 Getting Started
