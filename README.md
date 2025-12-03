@@ -17,6 +17,7 @@ code-review-assistant/
 ├── code_review_assistant/
 │   ├── __init__.py
 │   ├── agent.py                 # Main orchestration (root agent + pipelines)
+│   ├── agent_engine_app.py      # For deployment on Vertex AI Agent engine
 │   ├── config.py                # Configuration management
 │   ├── constants.py             # StateKeys constants
 │   ├── requirements.txt         # Python dependencies
@@ -92,4 +93,4 @@ nano .env  # Add your GOOGLE_CLOUD_PROJECT
 
 ### Acknowledgement
 
-original code from [Ayoisio](https://github.com/ayoisio/adk-code-review-assistant/tree/codelab)
+original codelab from [Ayoisio](https://github.com/ayoisio/adk-code-review-assistant/tree/codelab)
