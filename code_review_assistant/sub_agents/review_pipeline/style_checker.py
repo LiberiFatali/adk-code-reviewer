@@ -9,8 +9,8 @@ from google.adk.agents import Agent
 from google.adk.agents.readonly_context import ReadonlyContext
 from google.adk.tools import FunctionTool
 from google.adk.utils import instructions_utils
-from code_review_assistant.config import config
-from code_review_assistant.tools import check_code_style
+from ...config import config
+from ...tools import check_code_style
 
 
 async def style_checker_instruction_provider(context: ReadonlyContext) -> str:

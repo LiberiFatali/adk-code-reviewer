@@ -66,6 +66,36 @@ ensure_apis_enabled_for_cloud_run() {
     echo "   - All required APIs for Cloud Run are processed."
 }
 
+ensure_apis_enabled_for_agent_engine() {
+    echo "🔧 Checking and enabling required Google Cloud APIs for Agent Engine..."
+
+    REQUIRED_APIS=(
+        "aiplatform.googleapis.com"
+        "storage.googleapis.com"
+        "cloudbuild.googleapis.com"
+        "compute.googleapis.com"
+        "cloudtrace.googleapis.com"
+        "cloudresourcemanager.googleapis.com"
+        "telemetry.googleapis.com"
+    )
+
+    for API in "${REQUIRED_APIS[@]}"; do
+        if ! gcloud services list --enabled --filter="name:${API}" --format="value(name)" --project="${GOOGLE_CLOUD_PROJECT}" 2>/dev/null | grep -q "${API}"; then
+            echo "   - Enabling ${API}..."
+            if gcloud services enable "${API}" --project="${GOOGLE_CLOUD_PROJECT}"; then
+                echo "   - ${API} enabled successfully. Waiting for propagation..."
+                sleep 5  # Give the API a moment to fully activate
+            else
+                echo "   ⚠️  Warning: Failed to enable ${API}. You may need to enable it manually."
+            fi
+        else
+            echo "   - ${API} is already enabled."
+        fi
+    done
+
+    echo "   - All required APIs for Agent Engine are processed."
+}
+
 ensure_bucket_exists() {
     local BUCKET_NAME=$1
     local PURPOSE=$2

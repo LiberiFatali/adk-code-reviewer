@@ -6,8 +6,8 @@ from dotenv import load_dotenv
 env_path = Path(__file__).parent.parent / '.env'
 load_dotenv(dotenv_path=env_path)
 
-from code_review_assistant.sub_agents.review_pipeline.code_analyzer import code_analyzer_agent
-from code_review_assistant.services import get_session_service
+from ..code_review_assistant.sub_agents.review_pipeline.code_analyzer import code_analyzer_agent
+from ..code_review_assistant.services import get_session_service
 from google.adk.runners import Runner
 from google.genai.types import Content, Part
 

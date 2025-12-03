@@ -9,7 +9,7 @@ from google.adk.agents import Agent
 from google.adk.agents.readonly_context import ReadonlyContext
 from google.adk.code_executors import BuiltInCodeExecutor
 from google.adk.utils import instructions_utils
-from code_review_assistant.config import config
+from ...config import config
 
 
 async def test_runner_instruction_provider(context: ReadonlyContext) -> str:
