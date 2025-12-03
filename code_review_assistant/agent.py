@@ -7,15 +7,15 @@ Python code and provides detailed feedback through a multi-stage pipeline.
 
 from .config import config
 from google.adk.agents import Agent, LoopAgent, SequentialAgent
-from code_review_assistant.sub_agents.review_pipeline.code_analyzer import code_analyzer_agent
-from code_review_assistant.sub_agents.review_pipeline.style_checker import style_checker_agent
-from code_review_assistant.sub_agents.review_pipeline.test_runner import test_runner_agent
-from code_review_assistant.sub_agents.review_pipeline.feedback_synthesizer import feedback_synthesizer_agent
+from .sub_agents.review_pipeline.code_analyzer import code_analyzer_agent
+from .sub_agents.review_pipeline.style_checker import style_checker_agent
+from .sub_agents.review_pipeline.test_runner import test_runner_agent
+from .sub_agents.review_pipeline.feedback_synthesizer import feedback_synthesizer_agent
 
-from code_review_assistant.sub_agents.fix_pipeline.code_fixer import code_fixer_agent
-from code_review_assistant.sub_agents.fix_pipeline.fix_test_runner import fix_test_runner_agent
-from code_review_assistant.sub_agents.fix_pipeline.fix_validator import fix_validator_agent
-from code_review_assistant.sub_agents.fix_pipeline.fix_synthesizer import fix_synthesizer_agent
+from .sub_agents.fix_pipeline.code_fixer import code_fixer_agent
+from .sub_agents.fix_pipeline.fix_test_runner import fix_test_runner_agent
+from .sub_agents.fix_pipeline.fix_validator import fix_validator_agent
+from .sub_agents.fix_pipeline.fix_synthesizer import fix_synthesizer_agent
 
 
 # Create sequential pipeline

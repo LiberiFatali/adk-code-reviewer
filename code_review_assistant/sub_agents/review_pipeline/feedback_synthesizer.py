@@ -9,8 +9,8 @@ from google.adk.agents import Agent
 from google.adk.agents.readonly_context import ReadonlyContext
 from google.adk.tools import FunctionTool
 from google.adk.utils import instructions_utils
-from code_review_assistant.config import config
-from code_review_assistant.tools import search_past_feedback, update_grading_progress, save_grading_report
+from ...config import config
+from ...tools import search_past_feedback, update_grading_progress, save_grading_report
 
 
 async def feedback_instruction_provider(context: ReadonlyContext) -> str:

@@ -76,6 +76,8 @@ ensure_apis_enabled_for_agent_engine() {
         "cloudbuild.googleapis.com"
         "compute.googleapis.com"
         "cloudtrace.googleapis.com"
+        "cloudresourcemanager.googleapis.com"
+        "telemetry.googleapis.com"
     )
 
     for API in "${REQUIRED_APIS[@]}"; do

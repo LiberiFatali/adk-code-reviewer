@@ -7,8 +7,8 @@ identifying functions, classes, imports, and potential issues.
 
 from google.adk.agents import Agent
 from google.adk.tools import FunctionTool
-from code_review_assistant.config import config
-from code_review_assistant.tools import analyze_code_structure
+from ...config import config
+from ...tools import analyze_code_structure
 
 
 code_analyzer_agent = Agent(

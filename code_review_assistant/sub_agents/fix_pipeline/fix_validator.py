@@ -8,8 +8,8 @@ from google.adk.agents import Agent
 from google.adk.agents.readonly_context import ReadonlyContext
 from google.adk.tools import FunctionTool
 from google.adk.utils import instructions_utils
-from code_review_assistant.config import config
-from code_review_assistant.tools import validate_fixed_style, compile_fix_report, exit_fix_loop
+from ...config import config
+from ...tools import validate_fixed_style, compile_fix_report, exit_fix_loop
 
 async def fix_validator_instruction_provider(context: ReadonlyContext) -> str:
     """Dynamic instruction provider that injects state variables."""
