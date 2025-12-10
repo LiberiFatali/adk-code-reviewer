@@ -1,6 +1,8 @@
 # 🎓 Code Reviewer
 
-Production AI agents with Google ADK
+Production AI agents with Google ADK.
+
+More details at [Writeup](https://www.kaggle.com/competitions/agents-intensive-capstone-project/writeups/adk-code-reviewer)
 
 ## 🎯 In This Project
 
